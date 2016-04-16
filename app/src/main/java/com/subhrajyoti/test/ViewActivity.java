@@ -1,5 +1,7 @@
 package com.subhrajyoti.test;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import org.json.JSONArray;
@@ -40,6 +43,13 @@ public class ViewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayout);
         recyclerView.setAdapter(mainAdapter);
         new FetchData().execute();
+        recyclerView.addOnItemTouchListener(new RecyclerClickListener(this, new RecyclerClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://myntra.com/"+arrayList.get(position).getBUY_URL()));
+                startActivity(browserIntent);
+            }
+        }));
     }
 
     public class FetchData extends AsyncTask<String, Void, Boolean> {
